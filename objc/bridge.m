@@ -1022,7 +1022,7 @@ id nu_calling_objc_method_handler(id target, Method_t m, NSMutableArray *args)
 //the method_***** functions seems to count c blocks twice, i.e. they separate
 //the @ and ?. Using an NSMethodSignature seems to be an easy way around it.
 //However, it appears to have some flaws as it causes 'nuke test' to fail
-#define USE_SIG 1
+#define USE_SIG 0
 
 #if USE_SIG
 	NSMethodSignature *sig = [target methodSignatureForSelector:s];
