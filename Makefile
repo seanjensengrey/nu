@@ -6,7 +6,8 @@
 
 SYSTEM = $(shell uname)
 
-PREFIX ?= /usr/local
+PCRE_INCLUDE ?= $(shell pcre-config --cflags)
+PCRE_LIB ?= $(shell pcre-config --libs)
 
 ifeq ($(SYSTEM), Darwin)
 	ifeq ($(shell test -e /usr/lib/libffi.dylib && echo yes), yes)
@@ -29,14 +30,9 @@ endif
 INCLUDES = $(FFI_INCLUDE) -I./include
 
 ifeq ($(SYSTEM), Darwin)
-	ifeq ($(shell test -d $(PREFIX)/include && echo yes), yes)
-		INCLUDES += -I$(PREFIX)/include
-	endif
 	FRAMEWORKS = -framework Cocoa
-	LIBS = -lobjc -lpcre -lreadline
-	ifeq ($(shell test -d $(PREFIX)/lib && echo yes), yes)
-		LIBDIRS += -L$(PREFIX)/lib
-	endif
+	INCLUDES += $(PCRE_INCLUDE)
+	LIBS = $(PCRE_LIB) -lobjc -lreadline
 else
 	FRAMEWORKS =
 	LIBS = -lm -lpcre -lreadline -lgnustep-base
